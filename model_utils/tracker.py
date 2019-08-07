@@ -108,8 +108,12 @@ class FieldInstanceTracker(object):
                     field_tracker = FileDescriptorTracker(field_obj.field)
                     setattr(self.instance.__class__, field, field_tracker)
                 else:
-                    field_tracker = DeferredAttributeTracker(
-                        field_obj.field_name, None)
+                    if django.VERSION >= (2, 1):
+                        field_tracker = DeferredAttributeTracker(
+                            field_obj.field_name)
+                    else:
+                        field_tracker = DeferredAttributeTracker(
+                            field_obj.field_name, None)
                     setattr(self.instance.__class__, field, field_tracker)
         else:
             for field in self.fields:
