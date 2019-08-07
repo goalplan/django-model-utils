@@ -2,7 +2,6 @@ sudo: false
 language: python
 cache: pip
 python:
-- 2.7
 - 3.4
 - 3.5
 - 3.6
@@ -10,14 +9,3 @@ install: pip install tox-travis codecov
 # positional args ({posargs}) to pass into tox.ini
 script: tox -- --cov
 after_success: codecov
-deploy:
-  provider: pypi
-  user: jazzband
-  server: https://jazzband.co/projects/django-model-utils/upload
-  distributions: sdist bdist_wheel
-  password:
-    secure: JxUmEdYS8qT+7xhVyzmVD4Gkwqdz5XKxoUhKP795CWIXoJjtlGszyo6w0XfnFs0epXtd1NuCRXdhea+EqWKFDlQ3Yg7m6Y/yTQV6nMHxCPSvicROho7pAiJmfc/x+rSsPt5ag8av6+S07tOqvMnWBBefYbpHRoel78RXkm9l7Mc=
-  on:
-    tags: true
-    repo: jazzband/django-model-utils
-    python: 3.6
