@@ -5,7 +5,6 @@ import uuid
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 
 DEFAULT_CHOICES_NAME = 'STATUS'
@@ -171,7 +170,6 @@ def get_excerpt(content):
     return '\n'.join(default_excerpt)
 
 
-@python_2_unicode_compatible
 class SplitText(object):
     def __init__(self, instance, field_name, excerpt_field_name):
         # instead of storing actual values store a reference to the instance
@@ -284,15 +282,15 @@ class UUIDField(models.UUIDField):
         ValidationError
             UUID version 2 is not supported.
         """
-        
+
         if version == 2:
             raise ValidationError(
                 'UUID version 2 is not supported.')
-            
+
         if version < 1 or version > 5:
             raise ValidationError(
                 'UUID version is not valid.')
-            
+
         if version == 1:
             default = uuid.uuid1
         elif version == 3:
@@ -300,8 +298,8 @@ class UUIDField(models.UUIDField):
         elif version == 4:
             default = uuid.uuid4
         elif version == 5:
-            default = uuid.uuid5  
-           
+            default = uuid.uuid5
+
         kwargs.setdefault('primary_key', primary_key)
         kwargs.setdefault('editable', editable)
         kwargs.setdefault('default', default)
