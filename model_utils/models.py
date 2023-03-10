@@ -4,7 +4,7 @@ import django
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models, transaction, router
 from django.db.models.signals import post_save, pre_save
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from model_utils.fields import (
     AutoCreatedField,

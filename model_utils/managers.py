@@ -7,7 +7,6 @@ from django.db.models.query import ModelIterable
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.db.models.constants import LOOKUP_SEP
-from django.utils.six import string_types
 
 from django.db import connection
 from django.db.models.sql.datastructures import Join
@@ -65,7 +64,7 @@ class InheritanceQuerySetMixin(object):
                 if subclass is self.model:
                     continue
 
-                if not isinstance(subclass, string_types):
+                if not isinstance(subclass, (str,)):
                     subclass = self._get_ancestors_path(
                         subclass, levels=levels)
 
@@ -89,11 +88,14 @@ class InheritanceQuerySetMixin(object):
         return new_qs
 
     def _chain(self, **kwargs):
+        update = {}
         for name in ['subclasses', '_annotated']:
             if hasattr(self, name):
-                kwargs[name] = getattr(self, name)
+                update[name] = getattr(self, name)
 
-        return super(InheritanceQuerySetMixin, self)._chain(**kwargs)
+        chained = super()._chain(**kwargs)
+        chained.__dict__.update(update)
+        return chained
 
     def _clone(self, klass=None, setup=False, **kwargs):
         if django.VERSION >= (2, 0):
