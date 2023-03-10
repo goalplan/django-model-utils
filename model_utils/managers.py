@@ -88,11 +88,14 @@ class InheritanceQuerySetMixin(object):
         return new_qs
 
     def _chain(self, **kwargs):
+        update = {}
         for name in ['subclasses', '_annotated']:
             if hasattr(self, name):
-                kwargs[name] = getattr(self, name)
+                update[name] = getattr(self, name)
 
-        return super(InheritanceQuerySetMixin, self)._chain(**kwargs)
+        chained = super()._chain(**kwargs)
+        chained.__dict__.update(update)
+        return chained
 
     def _clone(self, klass=None, setup=False, **kwargs):
         if django.VERSION >= (2, 0):
